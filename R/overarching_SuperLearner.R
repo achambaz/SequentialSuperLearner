@@ -1,6 +1,10 @@
-#' SequentialSuperLearner: ... short description...
+#' SequentialSuperLearner: Implements the overarching sequential super learning algorithm
 #'
-#' ... short description...
+#' The overarching sequential super learning algorithm is a variant of the super 
+#' learning algorithm. Designed to learn from times series, it sequentially identifies 
+#' the best algorithm in a library, or the best combination of algorithms in the library,
+#' where the said library consists of several super learners.
+#' 
 #' 
 #' @docType package
 #' @name SequentialSuperLearner
@@ -13,12 +17,13 @@ NULL
 #' This man  page relies heavily  on the  man page of  the \code{SuperLearner}
 #' function.
 #' 
-#' ... à vérifier 
+#' 
 #'
-#' The \code{overarching_SuperLearner} function takes  a pair (X,Y) and trains
-#' the  overarching  Super  Learner.   The   weights  for  each  algorithm  in
-#' \code{SL.library}  is estimated,  along  with the  fit  of each  algorithm.
-#' \code{overarching_SuperLearner} can also return  the predicted values based
+#' The \code{overarching_SuperLearner} function takes  a pair \code{(X,Y)} and trains
+#' the  overarching  Super  Learner.   The   weights  for  all  algorithms  in the
+#' \code{SL.library} entry of the \code{meta_learning} argument are estimated,  along 
+#' with the  fits  of all  base and meta algorithms.
+#' The \code{overarching_SuperLearner} function can also return  the predicted values based
 #' on a validation set.
 #' 
 #' The prescreen  algorithms.  These  algorithms first  rank the  variables in
@@ -30,11 +35,11 @@ NULL
 #' The SuperLearner package contains a few prediction and screening algorithm
 #' wrappers. The full list of wrappers can be viewed with
 #' \code{listWrappers()}. The design of the SuperLearner package is such that
-#' the user can easily add their own wrappers. We also maintain a website with
+#' the user can easily add their own wrappers. A website is also maintained with
 #' additional examples of wrapper functions at
 #' \url{https://github.com/ecpolley/SuperLearnerExtra}.
 #'
-#' ... à vérifier
+#' 
 #' 
 #' @param Y The outcome in the training data set. Must be a numeric vector.
 #'
@@ -153,13 +158,14 @@ NULL
 #' 
 #' @examples
 #' 
-#' X1 <- rnorm(1300, 0, 1)
-#' X2 <- rexp(1300, 0.8)
+#' X1 <- rnorm(1500, 0, 1)
+#' X2 <- rexp(1500, 0.8)
 #' epoch <- c(rep(1990, 200),
 #'            rep(1991, 400),
 #'            rep(1992, 200),
 #'            rep(1993, 200),
-#'            rep(1994, 300))
+#'            rep(1994, 300),
+#'            rep(1995, 200))
 #' Y <- 2*X1 + X2 + rnorm(2*X1 + X2 , 2)
 #'
 #' dat <- data.frame(X1, X2, epoch, Y)
@@ -200,14 +206,17 @@ NULL
 #'
 #' overarching <- list(train.valid.Rows = train.valid.Rows_overarching)
 #' 
-#' SL <- overarching_SuperLearner(Y = dat$Y,
-#'                                X = dat[, -4],
-#'                                obsWeights = rep(1, nrow(dat)),
+#' SL <- overarching_SuperLearner(Y = dat$Y[epoch <= 1994],
+#'                                X = dat[epoch <= 1994, -4],
+#'                                obsWeights = rep(1, nrow(dat[epoch <= 1994, ])),
 #'                                base_learning = base_learning,
 #'                                meta_learning = meta_learning,
 #'                                overarching = overarching,
 #'                                family = "gaussian")
 #'
+#' preds <- predict(SL, dat[epoch == 1995, -4]) 
+#' 
+#' 
 #' @export
 overarching_SuperLearner <- function(Y, X, newX = NULL, family = stat::gaussian(),
                                      base_learning = list(SL.library = c("SL.mean", "SL.glm"), 
@@ -291,13 +300,31 @@ overarching_SuperLearner <- function(Y, X, newX = NULL, family = stat::gaussian(
   ## Compute super learner predictions on newX.
   getPred_NewX <- meta_learners$method$computePred(predY = meta_learners$library.predict,
                                                    coef = coef, control = control)
-  
-  return(list(base_learners = base_learners,
+  out <- list(base_learners = base_learners,
               meta_learners = meta_learners,
               coef_overarching = coef_overarching,
               predictions_overarching_training = predictions_overarching,
-              predictions_overarching_newX = getPred_NewX))
+              predictions_overarching_newX = getPred_NewX)
+  class(out) <- "overarching_SuperLearner"
+  return(out)
   
 }
 
 environment(overarching_SuperLearner) <- asNamespace("SuperLearner")
+
+#' @method print overarching_SuperLearner
+#' @export
+print.overarching_SuperLearner <- function(object) {
+  cat("A fit object from the 'overarching_SuperLearner' function.\n\n")
+  cat("A list five entries (see the function's manual):\n\n")
+  cat("* base_learners\n\n")
+  cat("\n\n* meta_learners\n\n")
+  cat("\n\n* coef_overarching\n\n")
+  str(object$coef_overarching)
+  cat("\n\n* predictions_overarching_training\n\n")
+  str(object$predictions_overarching_training)
+  cat("\n\n* predictions_overarching_newX\n\n")
+  str(object$predictions_overarching_newX)
+  
+  return(invisible())  
+}
