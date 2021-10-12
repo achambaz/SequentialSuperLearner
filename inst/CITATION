@@ -1,0 +1,17 @@
+citHeader("To cite 'SequentialSuperLearner' in publications use:")
+
+citEntry(entry = "Article",
+  title        = "One-step ahead sequential Super Learning from short times series of many slightly dependent data, and anticipating the cost of natural disasters",
+  author       = personList(as.person("Geoffrey Ecoto"),
+                            as.person("Aurélien Bibaut"),
+                            as.person("Antoine Chambaz")),
+  journal      = "arXiv",
+  year         = "2021",
+  url          = "https://arxiv.org/abs/2107.13291",
+
+  textVersion  =
+  paste("G. Ecoto, A. Bibaut, A. Chambaz (2021).",
+        "One-step ahead sequential Super Learning from short times series of many slightly dependent data, and anticipating the cost of natural disasters,",
+        "arXiv,",
+        "URL https://arxiv.org/abs/2107.13291.")
+)
