@@ -8,6 +8,7 @@
 #'
 #' @param object Fitted object from \code{overarching_SuperLearner}
 #' @param newdata New X values for prediction
+#' @param ... Not used.
 #'
 #' @return
 #' \item{base_learners_predictions}{Predicted values for each base algorithm in library}
@@ -31,7 +32,7 @@
 #' @keywords models
 #' @method predict overarching_SuperLearner
 #' @export
-predict.overarching_SuperLearner <- function(object, newdata){
+predict.overarching_SuperLearner <- function(object, newdata, ...){
   
   base_learners_predictions <- SuperLearner::predict.SuperLearner(object = object$base_learners,
                                                                   newdata = newdata)
@@ -57,14 +58,14 @@ predict.overarching_SuperLearner <- function(object, newdata){
 
 #' @method print predict.overarching_SuperLearner
 #' @export
-print.predict.overarching_SuperLearner <- function(object, n = 7) {
+print.predict.overarching_SuperLearner <- function(x, ...) {
   cat("A prediction object based on an 'overarching_SuperLearner' fit.\n\n")
   cat("A list consisting of three objects:\n\n")
   cat("* a data.frame that notably contains the predictions for each base algorithm in the library\n\n")
-  str(object$base_learners_predictions)
+  utils::str(x$base_learners_predictions)
   cat("\n\n* a list with two entries that notably contains the predictions for each meta algorithm in the library\n\n")
-  str(object$meta_learners_predictions)
+  utils::str(x$meta_learners_predictions)
   cat("\n\n* a vector containing the predictions made by the overarching super learner\n\n")
-  str(object$overarching_predictions)
+  utils::str(x$overarching_predictions)
   return(invisible())  
 }

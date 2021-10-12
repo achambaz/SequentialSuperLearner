@@ -314,17 +314,17 @@ environment(overarching_SuperLearner) <- asNamespace("SuperLearner")
 
 #' @method print overarching_SuperLearner
 #' @export
-print.overarching_SuperLearner <- function(object) {
+print.overarching_SuperLearner <- function(x, ...) {
   cat("A fit object from the 'overarching_SuperLearner' function.\n\n")
   cat("A list five entries (see the function's manual):\n\n")
   cat("* base_learners\n\n")
   cat("\n\n* meta_learners\n\n")
   cat("\n\n* coef_overarching\n\n")
-  str(object$coef_overarching)
+  utils::str(x$coef_overarching)
   cat("\n\n* predictions_overarching_training\n\n")
-  str(object$predictions_overarching_training)
+  utils::str(x$predictions_overarching_training)
   cat("\n\n* predictions_overarching_newX\n\n")
-  str(object$predictions_overarching_newX)
+  utils::str(x$predictions_overarching_newX)
   
   return(invisible())  
 }
