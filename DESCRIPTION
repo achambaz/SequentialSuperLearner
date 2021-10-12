@@ -1,5 +1,5 @@
-Package: SequentialSuperLearner
-Title: A Sequential Super Learner
+Package:  SequentialSuperLearner
+Title: An implementation of the so-called overarching sequential super learning algorithm
 Version: 0.0.0.9000
 Authors@R:c(
     person(given = "Antoine",
@@ -10,7 +10,7 @@ Authors@R:c(
            family = "Ecoto",
            role = c("aut", "cre"),
            email = "geoffrey.ecoto@gmail.com"))
-Description: What the package does (one paragraph).
+Description: The overarching sequential super learning algorithm is a variant of the super learning algorithm. Designed to learn from times series, it sequentially identifies the best algorithm in a library, or the best combination of algorithms in the library, where the said library consists of several super learners.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
