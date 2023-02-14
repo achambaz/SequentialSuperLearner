@@ -271,7 +271,7 @@ overarching_SuperLearner <- function(Y, X, newX = NULL, family = stat::gaussian(
     Y_meta <- Y_meta[unlist(meta_learners$validRows, use.names = FALSE)]
 
     obsWeights_meta <- obsWeights[unlist(base_learners$validRows, use.names = FALSE)]
-    obsWeights_meta <- obsWeights[unlist(meta_learners$validRows, use.names = FALSE)]
+    obsWeights_meta <- obsWeights_meta[unlist(meta_learners$validRows, use.names = FALSE)]
         
     idx_epoch_train <- overarching$train.valid.Rows[[epoch]][[1]]
     idx_epoch_validation <- overarching$train.valid.Rows[[epoch]][[2]]

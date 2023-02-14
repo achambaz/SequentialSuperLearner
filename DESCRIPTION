@@ -1,7 +1,7 @@
-Package:  SequentialSuperLearner
+Package: SequentialSuperLearner
 Title: An implementation of the so-called overarching sequential super learning algorithm
 Version: 0.0.0.9000
-Authors@R:c(
+Authors@R: c(
     person(given = "Antoine",
            family = "Chambaz",
            role = c("aut"),
@@ -16,4 +16,4 @@ Encoding: UTF-8
 LazyData: true
 Imports: rpart, SuperLearner, utils
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
